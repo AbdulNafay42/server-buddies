@@ -1,5 +1,9 @@
 # Server Buddies
 
+[![npm](https://img.shields.io/npm/v/server-buddies)](https://www.npmjs.com/package/server-buddies)
+[![license](https://img.shields.io/npm/l/server-buddies)](./LICENSE)
+[**Live demo & configurator**](https://mahmed74.github.io/server-buddies/) · [npm](https://www.npmjs.com/package/server-buddies)
+
 Tiny interactive mascots that hang from your website. Pick a character, choose how it hangs, switch behaviours on or off, and drop it in. Zero dependencies, framework-agnostic, ~12 kB gzipped.
 
 **Characters:** `server` · `robot` · `cat` · `ghost` · `cloud` · `database`

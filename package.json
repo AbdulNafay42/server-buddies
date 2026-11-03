@@ -1,6 +1,6 @@
 {
   "name": "server-buddies",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cute, interactive characters that hang from your website. Pick a character, a tether and its behaviours — drop it into any site, or use the React component.",
   "keywords": [
     "mascot",
@@ -17,6 +17,14 @@
   ],
   "license": "MIT",
   "author": "mahmed74",
+  "homepage": "https://mahmed74.github.io/server-buddies/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahmed74/server-buddies.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mahmed74/server-buddies/issues"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
