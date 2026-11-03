@@ -76,7 +76,8 @@ Importing is SSR-safe; `createBuddy()` is a no-op on the server.
 | `character` | `"server"` | `server`, `robot`, `cat`, `ghost`, `cloud`, `database`, `router`, `shield`, `bug`, `container` |
 | `hang` | `"rope"` | `rope`, `chain`, `spring`, `thread`, `balloon`, `none`. Each has its own physics |
 | `position` | `"top-right"` | `top-`/`bottom-` + `left`/`center`/`right`. Bottom positions perch (no tether) |
-| `accessory` | `"auto"` | `auto`, `none`, `nightcap`, `partyhat`, `crown`, `glasses`, `shades`, `headphones` |
+| `season` | `"auto"` | `auto` (Santa hat in December, witch hat or pumpkin on alternate days Oct 20-31, needs `timeOfDay`), `none`, `christmas`, `halloween` |
+| `accessory` | `"auto"` | `auto`, `none`, `nightcap`, `partyhat`, `crown`, `glasses`, `shades`, `headphones`, `santahat`, `witchhat`, `pumpkin` |
 | `color` | per character | Main body colour (hex); shades are derived |
 | `colors` | | Override `main`, `dark`, `light`, `shell`, `screen`, `balloon` individually |
 | `size` | `104` | Width in px (40-400) |
@@ -96,7 +97,7 @@ Importing is SSR-safe; `createBuddy()` is a no-op on the server.
 
 ### Actions
 
-`eyes` (pupils follow cursor/caret) · `swing` (pendulum physics from cursor and scroll) · `drag` (grab and throw, needs a tether) · `boop` (click for speech) · `combos` (5 clicks spin, 10 fall) · `idle` (yawn, check the time, dance) · `sleep` · `hover` (happy squint) · `timeOfDay` (nightcap at night, glow in the morning) · `effects` (confetti and alarm)
+`eyes` (pupils follow cursor/caret) · `swing` (pendulum physics from cursor and scroll) · `drag` (grab and throw, needs a tether) · `boop` (click for speech) · `combos` (5 clicks spin, 10 fall) · `idle` (yawn, check the time, dance) · `sleep` · `hover` (happy squint) · `timeOfDay` (nightcap at night, glow in the morning, Santa hat in December and a witch hat or pumpkin Oct 20-31) · `effects` (confetti and alarm)
 
 ## Methods
 

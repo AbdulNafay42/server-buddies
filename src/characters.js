@@ -236,7 +236,7 @@ export const CHARACTERS = {
 };
 
 export const CHARACTER_IDS = Object.keys(CHARACTERS);
-export const ACCESSORIES = ["auto", "none", "nightcap", "partyhat", "crown", "glasses", "shades", "headphones"];
+export const ACCESSORIES = ["auto", "none", "nightcap", "partyhat", "crown", "glasses", "shades", "headphones", "santahat", "witchhat", "pumpkin"];
 
 // Accessories that sit on / around the head. `a` is the character anchor.
 export function accessoryOnHead(name, a) {
@@ -245,6 +245,26 @@ export function accessoryOnHead(name, a) {
     return `<path d="M58 ${y + 2}Q62 ${y - 36} 102 ${y - 22}L104 ${y + 2}Z" fill="#ef4444"/>
       <rect x="54" y="${y - 3}" width="52" height="8" rx="4" fill="#f8fafc"/>
       <circle cx="103" cy="${y - 22}" r="5.5" fill="#f8fafc"/>`;
+  }
+  if (name === "santahat") {
+    return `<path d="M58 ${y + 2}Q60 ${y - 34} 100 ${y - 20}Q112 ${y - 16} 112 ${y - 4}L104 ${y + 2}Z" fill="#dc2626"/>
+      <rect x="54" y="${y - 3}" width="52" height="9" rx="4.5" fill="#f8fafc"/>
+      <circle cx="112" cy="${y - 5}" r="6" fill="#f8fafc"/>`;
+  }
+  if (name === "witchhat") {
+    return `<ellipse cx="80" cy="${y + 1}" rx="40" ry="7" fill="#1e1b2e"/>
+      <path d="M62 ${y}Q66 ${y - 14} 74 ${y - 26}Q78 ${y - 36} 94 ${y - 40}Q86 ${y - 30} 90 ${y - 18}Q92 ${y - 8} 98 ${y}Z" fill="#2e2548"/>
+      <path d="M63 ${y - 3}Q80 ${y - 8} 97 ${y - 3}L98 ${y - 11}Q80 ${y - 16} 64 ${y - 11}Z" fill="#7c3aed"/>
+      <rect x="74" y="${y - 12}" width="12" height="10" rx="2" fill="none" stroke="#facc15" stroke-width="2.4"/>`;
+  }
+  if (name === "pumpkin") {
+    const c = y - 11;
+    return `<ellipse cx="62" cy="${c}" rx="14" ry="16" fill="#ea580c"/><ellipse cx="98" cy="${c}" rx="14" ry="16" fill="#ea580c"/>
+      <ellipse cx="80" cy="${c}" rx="17" ry="17" fill="#f97316"/>
+      <path d="M72 ${c - 14}Q69 ${c} 72 ${c + 14}M88 ${c - 14}Q91 ${c} 88 ${c + 14}" stroke="#c2410c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M72 ${c - 2}l4-7l4 7zM84 ${c - 2}l4-7l4 7z" fill="#fde047"/>
+      <path d="M68 ${c + 5}l4 4l4-4l4 4l4-4l4 4l4-4l4 4" stroke="#fde047" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M80 ${c - 17}Q80 ${c - 25} 88 ${c - 27}" stroke="#15803d" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
   }
   if (name === "partyhat") {
     return `<path d="M63 ${y + 2}L80 ${y - 34}L97 ${y + 2}Z" fill="#f472b6"/>

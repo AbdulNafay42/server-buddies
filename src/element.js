@@ -1,7 +1,7 @@
 import { createBuddy } from "./core.js";
 
 const OBSERVED = [
-  "character", "hang", "position", "accessory", "color", "size", "length", "actions", "mood", "mount",
+  "character", "hang", "position", "accessory", "season", "color", "size", "length", "actions", "mood", "mount",
   "watch-input", "look-at", "hide-below", "offset-x", "offset-y"
 ];
 
@@ -16,6 +16,7 @@ function optionsFromAttributes(el) {
     hang: get("hang"),
     position: get("position"),
     accessory: get("accessory"),
+    season: get("season"),
     color: get("color"),
     size: num(get("size")),
     length: num(get("length")),

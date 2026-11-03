@@ -4,6 +4,21 @@ import { CSS, STYLE_ID } from "./styles.js";
 const isBrowser = typeof window !== "undefined" && typeof document !== "undefined";
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
+export const SEASONS = ["auto", "none", "christmas", "halloween"];
+const HALLOWEEN_HATS = ["witchhat", "pumpkin"];
+
+// Seasonal accessory for a date: Halloween (Oct 20-31, witch hat and pumpkin on alternate days) and Christmas (December). "auto" follows the date.
+export function seasonAccessory(season = "auto", date = new Date()) {
+  if (season === "none") return "none";
+  const halloween = () => HALLOWEEN_HATS[date.getDate() % 2];
+  if (season === "christmas") return "santahat";
+  if (season === "halloween") return halloween();
+  const m = date.getMonth();
+  if (m === 11) return "santahat";
+  if (m === 9 && date.getDate() >= 20) return halloween();
+  return "none";
+}
+
 export const ACTIONS = ["eyes", "swing", "drag", "boop", "combos", "idle", "sleep", "hover", "timeOfDay", "effects"];
 export const HANG_STYLES = ["rope", "chain", "spring", "thread", "balloon", "none"];
 export const POSITIONS = ["top-right", "top-left", "top-center", "bottom-right", "bottom-left", "bottom-center"];
@@ -96,6 +111,7 @@ export function resolveOptions(raw = {}) {
     offset,
     length: Number.isFinite(raw.length) ? clamp(raw.length, 0, 2000) : HANG[hang].len,
     accessory: ACCESSORIES.includes(raw.accessory) ? raw.accessory : "auto",
+    season: SEASONS.includes(raw.season) ? raw.season : "auto",
     zIndex: raw.zIndex ?? 40,
     hideBelow: Number(raw.hideBelow) || 0,
     mood: MOODS.includes(raw.mood) ? raw.mood : "happy",
@@ -157,7 +173,8 @@ export function renderPreview(character, options = {}) {
   const S = { state: options.state || "happy", eyesClosed: false, squint: false, idleAct: "", nervous: false, led: "#22c55e" };
   if (S.state === "down") S.led = "#ef4444";
   else if (S.state === "curious") S.led = "#f59e0b";
-  const acc = o.accessory === "auto" ? "none" : o.accessory;
+  // Previews are static (SSR-safe), so only an explicit season applies, never the current date.
+  const acc = o.accessory === "auto" ? seasonAccessory(o.season === "auto" ? "none" : o.season) : o.accessory;
   ensureStyles();
   return `<svg class="sb-svg sb-static" viewBox="0 0 160 120" role="img" aria-label="${ch.name} character" style="${paletteStyle(p)};overflow:visible">${characterMarkup(ch, S, acc)}</svg>`;
 }
@@ -334,7 +351,11 @@ function mountInstance(o) {
       nervous: S.nervous && !isDown,
       led
     };
-    const acc = o.accessory === "auto" ? (A.timeOfDay && S.period === "night" ? "nightcap" : "none") : o.accessory;
+    let acc = o.accessory;
+    if (acc === "auto") {
+      const seasonal = A.timeOfDay ? seasonAccessory(o.season) : seasonAccessory(o.season === "auto" ? "none" : o.season);
+      acc = seasonal !== "none" ? seasonal : A.timeOfDay && S.period === "night" ? "nightcap" : "none";
+    }
 
     buddy.dataset.state = state;
     buddy.dataset.act = S.idleAct;
