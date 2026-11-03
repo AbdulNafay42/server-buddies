@@ -1,0 +1,4 @@
+node_modules
+dist
+docs/server-buddies.global.js
+*.tgz

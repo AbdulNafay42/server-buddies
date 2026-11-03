@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Server Buddies — build your hanging mascot</title>
+<meta name="description" content="Pick a character, a tether and its behaviours, then copy the snippet. Server Buddies are tiny interactive mascots for any website.">
+<style>
+  :root{--bg:#f6f7fb;--panel:#fff;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--accent:#0058c3;--accent-ink:#fff;--code:#0b1220;--code-ink:#dbe7ff;--stage:#eef2fa;--shadow:0 1px 2px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.06)}
+  @media (prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#121a2e;--ink:#e8eefc;--muted:#94a3b8;--line:#25304b;--accent:#5b9dff;--accent-ink:#06122b;--code:#060a15;--code-ink:#cfe0ff;--stage:#0e1630;--shadow:none}}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  a{color:var(--accent)}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header.top{padding:44px 0 26px}
+  header.top h1{margin:0 0 8px;font-size:clamp(28px,5vw,42px);line-height:1.1;letter-spacing:-.02em}
+  header.top p{margin:0;max-width:640px;color:var(--muted);font-size:17px}
+  .install{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:8px 8px 8px 14px;border-radius:10px;background:var(--code);color:var(--code-ink);font:14px ui-monospace,Menlo,Consolas,monospace}
+  .btn{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:7px 12px;border-radius:8px;font:600 13px system-ui,sans-serif;cursor:pointer}
+  .btn:hover{border-color:var(--accent)}
+  .btn:focus-visible,.chip:focus-visible,.card:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  .layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:22px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+  .panel+.panel{margin-top:18px}
+  .step{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .step b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:12px}
+  .group+.group{margin-top:22px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+  .card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px 8px;border:2px solid var(--line);border-radius:12px;background:transparent;color:inherit;font:inherit;cursor:pointer;text-align:center}
+  .card:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+  .card[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent)}
+  .card svg{width:78px;height:auto;pointer-events:none}
+  .card span{font-size:13px;font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;background:transparent;color:inherit;font:600 13px system-ui,sans-serif;cursor:pointer}
+  .chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+  .chip[disabled]{opacity:.4;cursor:not-allowed}
+  .hint{margin:8px 0 0;color:var(--muted);font-size:13px}
+  .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  .swatch{width:28px;height:28px;border-radius:50%;border:2px solid var(--panel);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
+  .swatch[aria-pressed="true"]{box-shadow:0 0 0 2.5px var(--accent)}
+  input[type=color]{width:34px;height:30px;padding:0;border:1px solid var(--line);border-radius:8px;background:none;cursor:pointer}
+  input[type=range]{accent-color:var(--accent)}
+  label.check{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+  label.check:hover{border-color:var(--accent)}
+  label.check input{margin-top:3px;accent-color:var(--accent)}
+  label.check strong{display:block;font-size:14px}
+  label.check small{color:var(--muted);font-size:12.5px}
+  .actions{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+  .sticky{position:sticky;top:16px}
+  @media (max-width:900px){.sticky{position:static}}
+  .stage{position:relative;height:430px;overflow:hidden;border-radius:12px;background:var(--stage);border:1px dashed var(--line)}
+  .stage .fake{position:absolute;inset:auto 24px 24px 24px;display:grid;gap:10px}
+  .stage .fake i{display:block;height:10px;border-radius:5px;background:color-mix(in srgb,var(--muted) 22%,transparent)}
+  .stage .fake input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font:inherit}
+  .tabs{display:flex;gap:6px;margin:0 0 10px;flex-wrap:wrap}
+  pre.code{position:relative;margin:0;padding:16px;border-radius:12px;background:var(--code);color:var(--code-ink);font-size:13px;line-height:1.55;overflow:auto;white-space:pre}
+  .test{margin-top:14px}
+  h2{margin:48px 0 12px;font-size:24px;letter-spacing:-.01em}
+  h3{margin:28px 0 8px;font-size:17px}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:color-mix(in srgb,var(--muted) 8%,transparent)}
+  tr:last-child td{border-bottom:0}
+  td code,p code,li code{padding:1px 6px;border-radius:5px;background:color-mix(in srgb,var(--muted) 16%,transparent);font-size:12.5px}
+  .tablewrap{overflow-x:auto;border-radius:12px}
+  footer{margin:60px 0 40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Server Buddies</h1>
+    <p>Tiny interactive mascots that hang from your website. Pick a character, choose how it hangs, switch its behaviours on and off, then copy the snippet.</p>
+    <div class="install"><code>npm i server-buddies</code><button class="btn" id="copy-install" type="button">Copy</button></div>
+  </header>
+
+  <div class="layout">
+    <!-- ================= configurator ================= -->
+    <div>
+      <section class="panel" aria-labelledby="s1">
+        <h2 class="step" id="s1" style="margin:0 0 12px"><b>1</b> Character</h2>
+        <div class="cards" id="characters" role="group" aria-label="Character"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="s2">
+        <h2 class="step" id="s2" style="margin:0 0 12px"><b>2</b> Look</h2>
+        <div class="group">
+          <div class="step" style="margin-bottom:8px">Accessory</div>
+          <div class="chips" id="accessories" role="group" aria-label="Accessory"></div>
+          <p class="hint"><code>auto</code> puts a nightcap on at night when the time-of-day action is on.</p>
+        </div>
+        <div class="group">
+          <div class="step" style="margin-bottom:8px">Colour</div>
+          <div class="row" id="colors" role="group" aria-label="Colour"></div>
+        </div>
+        <div class="group">
+          <div class="step" style="margin-bottom:8px">Size <span id="size-out" style="text-transform:none;letter-spacing:0"></span></div>
+          <input id="size" type="range" min="64" max="180" step="2" value="104" aria-label="Size in pixels">
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="s3">
+        <h2 class="step" id="s3" style="margin:0 0 12px"><b>3</b> How it hangs</h2>
+        <div class="group">
+          <div class="chips" id="hangs" role="group" aria-label="Tether"></div>
+          <p class="hint" id="hang-hint"></p>
+        </div>
+        <div class="group">
+          <div class="step" style="margin-bottom:8px">Where on the page</div>
+          <div class="chips" id="positions" role="group" aria-label="Position"></div>
+          <p class="hint">Bottom positions make the buddy perch on the edge instead of hanging.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="s4">
+        <h2 class="step" id="s4" style="margin:0 0 12px"><b>4</b> Actions</h2>
+        <div class="actions" id="actions"></div>
+      </section>
+    </div>
+
+    <!-- ================= preview + code ================= -->
+    <div class="sticky">
+      <section class="panel" aria-label="Live preview">
+        <div class="step" style="margin-bottom:10px">Live preview</div>
+        <div class="stage" id="stage">
+          <div class="fake"><i style="width:60%"></i><i style="width:80%"></i><input id="demo-input" placeholder="Type here — the buddy watches the caret" aria-label="Demo input"></div>
+        </div>
+        <div class="row test">
+          <button class="btn" data-test="happy" type="button">Happy</button>
+          <button class="btn" data-test="curious" type="button">Curious</button>
+          <button class="btn" data-test="down" type="button">Down</button>
+          <button class="btn" data-test="celebrate" type="button">Celebrate</button>
+          <button class="btn" data-test="panic" type="button">Panic</button>
+          <button class="btn" data-test="flinch" type="button">Flinch</button>
+          <button class="btn" data-test="say" type="button">Say hi</button>
+          <button class="btn" data-test="sleep" type="button">Sleep</button>
+        </div>
+        <p class="hint">Try it: move your cursor around it, click it, drag and fling it, scroll, or leave it alone for a bit.</p>
+      </section>
+
+      <section class="panel" aria-label="Your snippet">
+        <div class="step" style="margin-bottom:10px"><b>5</b> Copy your snippet</div>
+        <div class="tabs" role="tablist" id="tabs"></div>
+        <pre class="code" id="snippet" tabindex="0"></pre>
+        <div class="row" style="margin-top:10px">
+          <button class="btn primary" id="copy-snippet" type="button">Copy snippet</button>
+          <button class="btn" id="copy-link" type="button">Copy shareable link</button>
+          <span class="hint" id="copied" role="status" style="margin:0"></span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ================= reference ================= -->
+  <h2 id="install">Install</h2>
+  <p><strong>Script tag</strong> (any website, no build step) — <code>&lt;script src="https://unpkg.com/server-buddies"&gt;&lt;/script&gt;</code> exposes <code>window.ServerBuddies</code> and registers the <code>&lt;server-buddy&gt;</code> element.</p>
+  <p><strong>npm</strong> — <code>npm i server-buddies</code>, then <code>import { createBuddy } from "server-buddies"</code> or <code>import { ServerBuddy } from "server-buddies/react"</code>. Styles are injected automatically; import <code>server-buddies/style.css</code> and pass <code>injectStyles: false</code> if your CSP forbids inline styles.</p>
+
+  <h2 id="options">Options</h2>
+  <p>Every option works as a <code>createBuddy()</code> option, a React prop, and (kebab-cased) a <code>&lt;server-buddy&gt;</code> attribute.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Option</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>character</code></td><td><code>"server"</code></td><td><code>server</code> · <code>robot</code> · <code>cat</code> · <code>ghost</code> · <code>cloud</code> · <code>database</code></td></tr>
+      <tr><td><code>hang</code></td><td><code>"rope"</code></td><td><code>rope</code> · <code>chain</code> · <code>spring</code> · <code>thread</code> · <code>balloon</code> · <code>none</code>. Each has its own physics.</td></tr>
+      <tr><td><code>position</code></td><td><code>"top-right"</code></td><td><code>top-</code> or <code>bottom-</code> + <code>left</code> / <code>center</code> / <code>right</code>. Bottom positions perch (no tether).</td></tr>
+      <tr><td><code>accessory</code></td><td><code>"auto"</code></td><td><code>auto</code> · <code>none</code> · <code>nightcap</code> · <code>partyhat</code> · <code>crown</code> · <code>glasses</code> · <code>shades</code> · <code>headphones</code></td></tr>
+      <tr><td><code>color</code></td><td>per character</td><td>Main body colour (hex). Darker/lighter shades are derived. Use <code>colors</code> to override <code>main</code>, <code>dark</code>, <code>light</code>, <code>shell</code>, <code>screen</code>, <code>balloon</code> individually.</td></tr>
+      <tr><td><code>size</code></td><td><code>104</code></td><td>Width in px (40–400).</td></tr>
+      <tr><td><code>length</code></td><td>per hang style</td><td>Tether length in px.</td></tr>
+      <tr><td><code>offset</code></td><td><code>{ x: 28, y: 0 }</code></td><td>Distance from the chosen edge in px.</td></tr>
+      <tr><td><code>actions</code></td><td>all on</td><td>Array of names to enable, or an object like <code>{ drag: false }</code>. Names: <code>eyes swing drag boop combos idle sleep hover timeOfDay effects</code>.</td></tr>
+      <tr><td><code>messages</code></td><td>built-in</td><td>Override any speech: <code>boop</code> (array), <code>hello</code>, <code>ouch</code>, <code>celebrate</code>, <code>panic</code>, <code>paste</code>, <code>throw</code>, <code>spin</code>, <code>fall</code>, <code>recover</code>, <code>watch</code> (use <code>{time}</code>).</td></tr>
+      <tr><td><code>mood</code></td><td><code>"happy"</code></td><td><code>happy</code> · <code>curious</code> · <code>down</code>. Change live with <code>setMood()</code>.</td></tr>
+      <tr><td><code>watchInput</code></td><td>—</td><td>CSS selector of a text field; the eyes follow the caret while typing and the buddy nods on paste.</td></tr>
+      <tr><td><code>lookAt</code></td><td>—</td><td>CSS selector; the eyes lock onto matching elements while the cursor is over them (e.g. your main button).</td></tr>
+      <tr><td><code>mount</code></td><td>page</td><td>Element or selector. The buddy is positioned inside it instead of the viewport.</td></tr>
+      <tr><td><code>hideBelow</code></td><td><code>0</code></td><td>Hide on viewports narrower than this many px (e.g. <code>1200</code>).</td></tr>
+      <tr><td><code>sleepAfter</code> / <code>idleAfter</code></td><td><code>15000</code> / <code>7000</code></td><td>Milliseconds of inactivity before sleeping / starting idle antics.</td></tr>
+      <tr><td><code>label</code></td><td>—</td><td>Accessible label for the button.</td></tr>
+      <tr><td><code>zIndex</code></td><td><code>40</code></td><td>Stacking order.</td></tr>
+      <tr><td><code>injectStyles</code></td><td><code>true</code></td><td>Set <code>false</code> and import <code>server-buddies/style.css</code> yourself.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="api">Methods</h2>
+  <p><code>createBuddy()</code> returns a handle. In React, put a <code>ref</code> on <code>&lt;ServerBuddy&gt;</code> for the same methods.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Method</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>say(text)</code></td><td>Show a speech bubble.</td></tr>
+      <tr><td><code>setMood("happy" | "curious" | "down")</code></td><td>Change mood. <code>down</code> shows X eyes, smoke and a red LED.</td></tr>
+      <tr><td><code>celebrate()</code> / <code>panic()</code></td><td>Confetti burst / red alarm glow, with a swing and a line of speech.</td></tr>
+      <tr><td><code>flinch()</code> / <code>pass()</code> / <code>nod()</code></td><td>Small reactions: a wince, an LED flash, a nod.</td></tr>
+      <tr><td><code>nervous(on)</code></td><td>Jitter and sweat while something risky is in progress.</td></tr>
+      <tr><td><code>boop()</code></td><td>Same as a click.</td></tr>
+      <tr><td><code>sleep()</code> / <code>wake()</code></td><td>Force the sleeping state, or wake up.</td></tr>
+      <tr><td><code>show()</code> / <code>hide()</code></td><td>Toggle visibility without destroying it.</td></tr>
+      <tr><td><code>update(options)</code></td><td>Apply new options (rebuilds the buddy, keeps its mood).</td></tr>
+      <tr><td><code>destroy()</code></td><td>Remove it and every listener and timer.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Example: react to a status check</h3>
+<pre class="code">const buddy = ServerBuddies.createBuddy({ character: "server", lookAt: "#check-btn", watchInput: "#url" });
+
+async function check(url) {
+  buddy.say("Here we go!");
+  buddy.nervous(true);
+  const res = await fetch("/api/check?url=" + encodeURIComponent(url)).then(r =&gt; r.json());
+  buddy.nervous(false);
+  buddy.setMood(res.ok ? "happy" : "down");
+  res.ok ? buddy.celebrate() : buddy.panic();
+}</pre>
+
+  <h2 id="a11y">Accessibility &amp; performance</h2>
+  <p>The buddy is a real <code>&lt;button&gt;</code> with an <code>aria-label</code>. It honours <code>prefers-reduced-motion</code> (physics and animations are off, speech bubbles stay), is hidden when printing, and does nothing during server-side rendering. Idle work is one 1&nbsp;s timer; pointer handling is passive. ~12&nbsp;kB gzipped, zero dependencies.</p>
+
+  <footer>MIT licensed. Made for the <a href="https://isitcrashing.com">isitcrashing.com</a> server buddy, now free for everyone.</footer>
+</div>
+
+<script src="./server-buddies.global.js"></script>
+<script>
+(function () {
+  var SB = window.ServerBuddies;
+  var $ = function (s) { return document.querySelector(s); };
+
+  var DEFAULTS = { character: "server", hang: "rope", position: "top-right", accessory: "auto", color: "", size: 104 };
+  var ALL = SB.ACTIONS.slice();
+  var ACTION_INFO = {
+    eyes: ["Eyes follow", "Pupils track the cursor and the caret in your inputs."],
+    swing: ["Swings", "Pendulum physics: cursor sweeps and scrolling set it swinging."],
+    drag: ["Grab & throw", "Drag it and let go. Needs a tether."],
+    boop: ["Boop", "Click for a speech bubble and a bounce."],
+    combos: ["Click combos", "5 clicks = spin, 10 clicks = it falls and climbs back."],
+    idle: ["Idle antics", "Yawns, checks the time, dances when you're away."],
+    sleep: ["Falls asleep", "Eyes close and it snores after 15s of inactivity."],
+    hover: ["Hover squint", "Happy eyes and blush if you hover for a moment."],
+    timeOfDay: ["Time of day", "Nightcap after 9pm, warm glow in the morning."],
+    effects: ["Effects", "Confetti on celebrate(), red alarm on panic()."]
+  };
+  var HANG_INFO = {
+    rope: "Classic swinging rope.",
+    chain: "Stiff, rattly chain links.",
+    spring: "Bouncy coil that stretches when you scroll or boop.",
+    thread: "Long, floaty spider thread.",
+    balloon: "Tied to a balloon that bobs along.",
+    none: "No tether: it perches and just wobbles."
+  };
+  var SWATCHES = ["", "#0058c3", "#7c3aed", "#db2777", "#f97316", "#f59e0b", "#10b981", "#0ea5e9", "#475569"];
+
+  var cfg = Object.assign({}, DEFAULTS, { actions: ALL.slice() });
+  try {
+    if (location.hash.length > 1) {
+      var saved = JSON.parse(decodeURIComponent(atob(location.hash.slice(1)).split("").map(function (c) { return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2); }).join("")));
+      Object.assign(cfg, saved);
+    }
+  } catch (e) {}
+
+  var buddy = null;
+  var tab = "script";
+
+  function isBottom() { return cfg.position.indexOf("bottom") === 0; }
+
+  function options() {
+    var o = { character: cfg.character, hang: cfg.hang, position: cfg.position, accessory: cfg.accessory, size: cfg.size, actions: cfg.actions };
+    if (cfg.color) o.color = cfg.color;
+    return o;
+  }
+
+  function mount() {
+    var mood = buddy && buddy.el ? ($("#stage .sb-buddy") || {}).dataset && $("#stage .sb-buddy").dataset.state : "happy";
+    if (buddy) buddy.destroy();
+    var o = options();
+    o.mount = "#stage";
+    o.watchInput = "#demo-input";
+    o.offset = { x: 40, y: 0 };
+    o.mood = mood === "down" ? "down" : mood === "curious" ? "curious" : "happy";
+    o.messages = { hello: "Hi!" };
+    buddy = SB.createBuddy(o);
+  }
+
+  // ----- pickers -----
+  function renderCharacters() {
+    var box = $("#characters");
+    box.innerHTML = "";
+    SB.characters.forEach(function (c) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "card";
+      b.setAttribute("aria-pressed", String(cfg.character === c.id));
+      b.title = c.blurb;
+      b.innerHTML = SB.renderPreview(c.id, { color: cfg.color || undefined, accessory: cfg.accessory }) + "<span>" + c.name + "</span>";
+      b.onclick = function () { cfg.character = c.id; changed(); };
+      box.appendChild(b);
+    });
+  }
+  function chips(sel, items, key, labeler, disabled) {
+    var box = $(sel);
+    box.innerHTML = "";
+    items.forEach(function (v) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.textContent = labeler ? labeler(v) : v;
+      b.setAttribute("aria-pressed", String(cfg[key] === v));
+      if (disabled && disabled(v)) b.disabled = true;
+      b.onclick = function () { cfg[key] = v; changed(); };
+      box.appendChild(b);
+    });
+  }
+  function renderColors() {
+    var box = $("#colors");
+    box.innerHTML = "";
+    SWATCHES.forEach(function (c) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "swatch";
+      b.setAttribute("aria-label", c ? "Colour " + c : "Default colour");
+      b.setAttribute("aria-pressed", String(cfg.color === c));
+      b.style.background = c || "conic-gradient(#0058c3,#f97316,#10b981,#7c3aed,#0058c3)";
+      b.onclick = function () { cfg.color = c; changed(); };
+      box.appendChild(b);
+    });
+    var pick = document.createElement("input");
+    pick.type = "color";
+    pick.value = cfg.color || "#0058c3";
+    pick.setAttribute("aria-label", "Custom colour");
+    pick.oninput = function () { cfg.color = pick.value; changed(true); };
+    box.appendChild(pick);
+  }
+  function renderActions() {
+    var box = $("#actions");
+    box.innerHTML = "";
+    ALL.forEach(function (a) {
+      var l = document.createElement("label");
+      l.className = "check";
+      var on = cfg.actions.indexOf(a) > -1;
+      l.innerHTML = '<input type="checkbox"' + (on ? " checked" : "") + '><span><strong>' + ACTION_INFO[a][0] + "</strong><small>" + ACTION_INFO[a][1] + "</small></span>";
+      l.querySelector("input").onchange = function (e) {
+        cfg.actions = ALL.filter(function (x) { return x === a ? e.target.checked : cfg.actions.indexOf(x) > -1; });
+        changed(true);
+      };
+      box.appendChild(l);
+    });
+  }
+
+  // ----- snippets -----
+  function snippetOptions() {
+    var o = {};
+    if (cfg.character !== DEFAULTS.character) o.character = cfg.character;
+    if (cfg.hang !== DEFAULTS.hang && !isBottom()) o.hang = cfg.hang;
+    if (cfg.position !== DEFAULTS.position) o.position = cfg.position;
+    if (cfg.accessory !== DEFAULTS.accessory) o.accessory = cfg.accessory;
+    if (cfg.color) o.color = cfg.color;
+    if (cfg.size !== DEFAULTS.size) o.size = cfg.size;
+    if (cfg.actions.length !== ALL.length) o.actions = cfg.actions;
+    return o;
+  }
+  function kebab(k) { return k.replace(/[A-Z]/g, function (m) { return "-" + m.toLowerCase(); }); }
+  function snippet() {
+    var o = snippetOptions(), keys = Object.keys(o);
+    if (tab === "script") {
+      var body = keys.length
+        ? "{\n" + keys.map(function (k) { return "    " + k + ": " + JSON.stringify(o[k]).replace(/","/g, '", "'); }).join(",\n") + "\n  }"
+        : "";
+      return '<script src="https://unpkg.com/server-buddies"><\/script>\n<script>\n  ServerBuddies.createBuddy(' + body + ");\n<\/script>";
+    }
+    if (tab === "react") {
+      var props = keys.map(function (k) {
+        var v = o[k];
+        return typeof v === "string" ? k + '="' + v + '"' : k + "={" + JSON.stringify(v).replace(/","/g, '", "') + "}";
+      });
+      var jsx = props.length > 2 ? "<ServerBuddy\n      " + props.join("\n      ") + "\n    />" : "<ServerBuddy" + (props.length ? " " + props.join(" ") : "") + " />";
+      return 'import { ServerBuddy } from "server-buddies/react";\n\nexport default function App() {\n  return (\n    <>\n      {/* ...your app */}\n    ' + jsx + "\n    </>\n  );\n}";
+    }
+    var attrs = keys.map(function (k) { return kebab(k) + '="' + (Array.isArray(o[k]) ? o[k].join(",") : o[k]) + '"'; });
+    return '<script src="https://unpkg.com/server-buddies"><\/script>\n<server-buddy' + (attrs.length ? " " + attrs.join(" ") : "") + "></server-buddy>";
+  }
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  function renderTabs() {
+    var box = $("#tabs");
+    box.innerHTML = "";
+    [["script", "Script tag"], ["react", "React / Next.js"], ["element", "Web component"]].forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-pressed", String(tab === t[0]));
+      b.textContent = t[1];
+      b.onclick = function () { tab = t[0]; renderTabs(); renderSnippet(); };
+      box.appendChild(b);
+    });
+  }
+  function renderSnippet() { $("#snippet").innerHTML = esc(snippet()); }
+
+  // ----- wiring -----
+  function renderHangHint() {
+    $("#hang-hint").textContent = isBottom() ? "Bottom positions perch, so the tether is off." : HANG_INFO[cfg.hang];
+  }
+  function persist() {
+    try {
+      var json = JSON.stringify(cfg);
+      history.replaceState(null, "", "#" + btoa(unescape(encodeURIComponent(json))));
+    } catch (e) {}
+  }
+  function changed(keepPickers) {
+    $("#size-out").textContent = cfg.size + "px";
+    if (!keepPickers) {
+      renderCharacters(); renderColors(); renderActions();
+    } else {
+      renderCharacters();
+    }
+    chips("#accessories", SB.ACCESSORIES, "accessory");
+    chips("#hangs", ["rope", "chain", "spring", "thread", "balloon", "none"], "hang", null, function () { return isBottom(); });
+    chips("#positions", SB.POSITIONS, "position");
+    renderHangHint();
+    renderSnippet();
+    mount();
+    persist();
+  }
+  function flash(msg) {
+    $("#copied").textContent = msg;
+    setTimeout(function () { $("#copied").textContent = ""; }, 1800);
+  }
+  function copy(text, msg) {
+    var done = function () { flash(msg); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
+    else {
+      var ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      ta.remove(); done();
+    }
+  }
+
+  $("#size").value = cfg.size;
+  $("#size").oninput = function (e) { cfg.size = Number(e.target.value); changed(true); };
+  $("#copy-snippet").onclick = function () { copy(snippet(), "Snippet copied"); };
+  $("#copy-link").onclick = function () { copy(location.href, "Link copied"); };
+  $("#copy-install").onclick = function () { copy("npm i server-buddies", "Copied"); };
+  document.querySelectorAll("[data-test]").forEach(function (b) {
+    b.onclick = function () {
+      var t = b.dataset.test;
+      if (t === "happy" || t === "curious" || t === "down") buddy.setMood(t);
+      else if (t === "say") buddy.say("Hello, world!");
+      else buddy[t]();
+    };
+  });
+
+  renderTabs();
+  changed();
+})();
+</script>
+</body>
+</html>
