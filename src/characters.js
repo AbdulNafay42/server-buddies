@@ -156,6 +156,82 @@ export const CHARACTERS = {
       <ellipse cx="80" cy="24" rx="50" ry="13" ${L}/>
       <rect x="40" y="81" width="38" height="6" rx="3" ${D}/>
       ${led(102, 85, 3.2, S.led)}${led(114, 85, 3.2, "#a7f3d0", "sb-led-b")}`
+  },
+  router: {
+    id: "router",
+    name: "Router",
+    blurb: "Flat, wide and always broadcasting.",
+    colors: { main: "#a78bfa", shell: "#1e293b", screen: "#0b1220" },
+    theme: { ...BODY_FACE, scleraStroke: "", line: "#3b0764", mouth: "#3b0764", down: "#be123c" },
+    face: { dx: 0, dy: 22, k: 1 },
+    anchor: { y: 38, hw: 62, earY: 62 },
+    blush: true,
+    body: (S) => `
+      <line x1="34" y1="40" x2="22" y2="10" stroke="#4c1d95" stroke-width="5" stroke-linecap="round"/>
+      <line x1="126" y1="40" x2="138" y2="10" stroke="#4c1d95" stroke-width="5" stroke-linecap="round"/>
+      ${led(22, 8, 4.5, S.led)}${led(138, 8, 4.5, S.led, "sb-led-b")}
+      <g fill="none" stroke-width="3.5" stroke-linecap="round" style="stroke:var(--sb-main)" opacity=".85">
+        <path d="M66 28Q80 18 94 28"/><path d="M58 20Q80 3 102 20"/>
+      </g>
+      <rect x="12" y="40" width="136" height="62" rx="22" ${M}/>
+      <rect x="12" y="40" width="136" height="62" rx="22" fill="none" stroke-width="3" style="stroke:var(--sb-dark)"/>
+      <rect x="28" y="88" width="14" height="8" rx="3" ${D}/><rect x="48" y="88" width="14" height="8" rx="3" ${D}/>
+      <rect x="68" y="88" width="14" height="8" rx="3" ${D}/><rect x="88" y="88" width="14" height="8" rx="3" ${D}/>
+      ${led(116, 92, 3.4, S.led)}${led(128, 92, 3.4, "#ddd6fe", "sb-led-c")}`
+  },
+
+  shield: {
+    id: "shield",
+    name: "Shield",
+    blurb: "The firewall. Nothing gets past it.",
+    colors: { main: "#e11d48", shell: "#1e293b", screen: "#0b1220" },
+    theme: { ...BODY_FACE, scleraStroke: "", line: "#4c0519", mouth: "#4c0519", down: "#fef08a" },
+    face: { dx: 0, dy: 2, k: 1 },
+    anchor: { y: 10, hw: 52, earY: 38 },
+    body: (S) => `
+      <path d="M80 6L136 22V58C136 84 112 102 80 114C48 102 24 84 24 58V22Z" ${M}/>
+      <path d="M80 6L136 22V58C136 84 112 102 80 114Z" ${D} opacity=".35"/>
+      <path d="M80 14L128 28V58C128 79 108 95 80 106C52 95 32 79 32 58V28Z" fill="none" stroke-width="3" style="stroke:var(--sb-light)" opacity=".7"/>
+      ${led(80, 90, 5, S.led)}`
+  },
+
+  bug: {
+    id: "bug",
+    name: "Bug",
+    blurb: "A friendly bug. Promise it's a feature.",
+    colors: { main: "#65a30d", shell: "#1e293b", screen: "#0b1220" },
+    theme: BODY_FACE,
+    face: { dx: 0, dy: 4, k: 1 },
+    anchor: { y: 14, hw: 54, earY: 46 },
+    body: (S) => `
+      <path d="M58 20Q50 6 38 4M102 20Q110 6 122 4" fill="none" stroke="#365314" stroke-width="3.5" stroke-linecap="round"/>
+      ${led(38, 4, 3.6, S.led)}${led(122, 4, 3.6, S.led, "sb-led-b")}
+      <path d="M30 70L12 62M30 84L10 86M32 98L16 110M130 70L148 62M130 84L150 86M128 98L144 110" stroke="#365314" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <ellipse cx="80" cy="76" rx="44" ry="34" ${M}/>
+      <path d="M80 44V110" stroke-width="3" style="stroke:var(--sb-dark)" fill="none"/>
+      <circle cx="60" cy="86" r="6" ${D}/><circle cx="100" cy="86" r="6" ${D}/><circle cx="66" cy="102" r="4.5" ${D}/><circle cx="94" cy="102" r="4.5" ${D}/>
+      <ellipse cx="80" cy="46" rx="48" ry="30" ${M}/>
+      <ellipse cx="80" cy="62" rx="24" ry="9" ${L} opacity=".5"/>`
+  },
+
+  container: {
+    id: "container",
+    name: "Container",
+    blurb: "Ships anywhere. Works on every machine.",
+    colors: { main: "#0ea5e9", shell: "#1e293b", screen: "#0b1220" },
+    theme: SCREEN_FACE,
+    face: { dx: 0, dy: 0, k: 1 },
+    anchor: { y: 16, hw: 58, earY: 40 },
+    body: (S) => `
+      <rect x="20" y="16" width="120" height="86" rx="8" ${M}/>
+      <g style="stroke:var(--sb-dark)" stroke-width="4" stroke-linecap="round">
+        <path d="M38 22V96M54 22V96M106 22V96M122 22V96"/>
+      </g>
+      <rect x="28" y="20" width="104" height="38" rx="8" ${SC}/>
+      <rect x="62" y="70" width="36" height="24" rx="5" ${SH}/>
+      <rect x="70" y="76" width="20" height="5" rx="2.5" ${D}/>
+      ${led(80, 87, 3.4, S.led)}
+      <rect x="14" y="98" width="132" height="8" rx="4" fill="#334155"/>`
   }
 };
 

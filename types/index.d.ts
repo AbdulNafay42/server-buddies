@@ -1,4 +1,4 @@
-export type CharacterId = "server" | "robot" | "cat" | "ghost" | "cloud" | "database";
+export type CharacterId = "server" | "robot" | "cat" | "ghost" | "cloud" | "database" | "router" | "shield" | "bug" | "container";
 export type HangStyle = "rope" | "chain" | "spring" | "thread" | "balloon" | "none";
 export type Position = "top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center";
 export type Accessory = "auto" | "none" | "nightcap" | "partyhat" | "crown" | "glasses" | "shades" | "headphones";

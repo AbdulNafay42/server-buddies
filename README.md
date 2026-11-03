@@ -2,7 +2,7 @@
 
 Tiny interactive mascots that hang from your website. Pick a character, choose how it hangs, switch behaviours on or off, and drop it in. Zero dependencies, framework-agnostic, ~12 kB gzipped.
 
-**Characters:** `server` · `robot` · `cat` · `ghost` · `cloud` · `database`
+**Characters:** `server` · `robot` · `cat` · `ghost` · `cloud` · `database` · `router` · `shield` · `bug` · `container`
 **Tethers:** `rope` · `chain` · `spring` · `thread` · `balloon` · `none` (perch)
 
 > Build yours visually with the configurator: run `npm run docs` in this repo (or deploy the `docs/` folder to GitHub Pages) and copy the generated snippet.
@@ -67,7 +67,7 @@ Importing is SSR-safe; `createBuddy()` is a no-op on the server.
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `character` | `"server"` | `server`, `robot`, `cat`, `ghost`, `cloud`, `database` |
+| `character` | `"server"` | `server`, `robot`, `cat`, `ghost`, `cloud`, `database`, `router`, `shield`, `bug`, `container` |
 | `hang` | `"rope"` | `rope`, `chain`, `spring`, `thread`, `balloon`, `none`. Each has its own physics |
 | `position` | `"top-right"` | `top-`/`bottom-` + `left`/`center`/`right`. Bottom positions perch (no tether) |
 | `accessory` | `"auto"` | `auto`, `none`, `nightcap`, `partyhat`, `crown`, `glasses`, `shades`, `headphones` |
