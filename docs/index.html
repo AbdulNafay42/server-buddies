@@ -3,8 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Server Buddies — build your hanging mascot</title>
-<meta name="description" content="Pick a character, a tether and its behaviours, then copy the snippet. Server Buddies are tiny interactive mascots for any website.">
+<title>Server Buddies – Animated Website Mascots for React &amp; HTML</title>
+<meta name="description" content="Add an interactive animated mascot to your website. Choose from 10 SVG characters, pick how it hangs, and copy a snippet for HTML, React or Next.js. Free, MIT, zero dependencies.">
+<link rel="canonical" href="https://mahmed74.github.io/server-buddies/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Server Buddies">
+<meta property="og:title" content="Server Buddies – Animated Website Mascots for React &amp; HTML">
+<meta property="og:description" content="10 interactive SVG mascots that hang, swing and react to your site. Build yours visually and copy the snippet.">
+<meta property="og:url" content="https://mahmed74.github.io/server-buddies/">
+<meta property="og:image" content="https://mahmed74.github.io/server-buddies/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Server Buddies – Animated Website Mascots">
+<meta name="twitter:description" content="10 interactive SVG mascots for HTML, React and Next.js. Zero dependencies.">
+<meta name="twitter:image" content="https://mahmed74.github.io/server-buddies/assets/og.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "Server Buddies",
+  "description": "Interactive animated mascots that hang from your website. 10 SVG characters, a React component and a web component, zero dependencies.",
+  "url": "https://mahmed74.github.io/server-buddies/",
+  "codeRepository": "https://github.com/mahmed74/server-buddies",
+  "programmingLanguage": "JavaScript",
+  "runtimePlatform": "Web browser",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": { "@type": "Person", "name": "mahmed74" },
+  "image": "https://mahmed74.github.io/server-buddies/assets/og.png",
+  "sameAs": ["https://www.npmjs.com/package/server-buddies", "https://github.com/mahmed74/server-buddies"]
+}
+</script>
 <style>
   :root{--bg:#f6f7fb;--panel:#fff;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--accent:#0058c3;--accent-ink:#fff;--code:#0b1220;--code-ink:#dbe7ff;--stage:#eef2fa;--shadow:0 1px 2px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.06)}
   @media (prefers-color-scheme:dark){:root{--bg:#0b1020;--panel:#121a2e;--ink:#e8eefc;--muted:#94a3b8;--line:#25304b;--accent:#5b9dff;--accent-ink:#06122b;--code:#060a15;--code-ink:#cfe0ff;--stage:#0e1630;--shadow:none}}
@@ -218,6 +248,16 @@ async function check(url) {
   buddy.setMood(res.ok ? "happy" : "down");
   res.ok ? buddy.celebrate() : buddy.panic();
 }</pre>
+
+  <h2 id="faq">FAQ</h2>
+  <h3>How do I add an animated mascot to my website?</h3>
+  <p>Add <code>&lt;script src="https://unpkg.com/server-buddies"&gt;&lt;/script&gt;</code> and call <code>ServerBuddies.createBuddy({ character: "robot" })</code>. Use the configurator above to generate the exact snippet.</p>
+  <h3>Is there a React or Next.js component?</h3>
+  <p>Yes. <code>npm i server-buddies</code>, then <code>import { ServerBuddy } from "server-buddies/react"</code>. It includes <code>"use client"</code> so it works in the Next.js App Router, and it renders nothing on the server.</p>
+  <h3>Can I react to my app's state, like an error or a finished task?</h3>
+  <p>Yes. Call <code>setMood("down")</code>, <code>celebrate()</code>, <code>panic()</code> or <code>say("…")</code>, or pass <code>mood</code> and <code>outcome</code> props in React.</p>
+  <h3>Is it free?</h3>
+  <p>Yes, MIT licensed with zero dependencies. See the <a href="https://github.com/mahmed74/server-buddies">source on GitHub</a> or the <a href="https://www.npmjs.com/package/server-buddies">package on npm</a>.</p>
 
   <h2 id="a11y">Accessibility &amp; performance</h2>
   <p>The buddy is a real <code>&lt;button&gt;</code> with an <code>aria-label</code>. It honours <code>prefers-reduced-motion</code> (physics and animations are off, speech bubbles stay), is hidden when printing, and does nothing during server-side rendering. Idle work is one 1&nbsp;s timer; pointer handling is passive. ~12&nbsp;kB gzipped, zero dependencies.</p>

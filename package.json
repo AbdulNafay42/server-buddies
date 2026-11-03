@@ -1,9 +1,13 @@
 {
   "name": "server-buddies",
-  "version": "0.1.3",
-  "description": "Cute, interactive characters that hang from your website. Pick a character, a tether and its behaviours — drop it into any site, or use the React component.",
+  "version": "0.1.4",
+  "description": "Interactive animated mascots that hang from your website. 10 SVG characters, 6 tethers, a React component and a web component, zero dependencies.",
   "keywords": [
     "mascot",
+    "animated-mascot",
+    "website-mascot",
+    "interactive-character",
+    "svg-character",
     "character",
     "buddy",
     "server",
@@ -12,8 +16,14 @@
     "svg",
     "widget",
     "react",
+    "react-component",
     "web-component",
-    "easter-egg"
+    "custom-element",
+    "easter-egg",
+    "pendulum",
+    "physics",
+    "no-dependencies",
+    "typescript-types"
   ],
   "license": "MIT",
   "author": "mahmed74",
